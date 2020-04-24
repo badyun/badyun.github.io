@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="never">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>视频播放器</title>
     <style>
         * {
@@ -29,16 +29,20 @@
         src="https://user-gold-cdn.xitu.io/2020/4/24/171ac6c077d4a5fc"></script>
     <script>
         function playM3u8(url) {
-            if (Hls.isSupported()) {
-                const video = document.getElementById('player');
-                video.volume = 1.0;
-                const hls = new Hls();
-                const m3u8Url = decodeURIComponent(url)
-                hls.loadSource(m3u8Url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play();
-                });
+            const video = document.getElementById('player');
+            const m3u8Url = decodeURIComponent(url)
+            if (!isPC()) {
+                video.setAttribute('src', m3u8Url)
+            } else {
+                if (Hls.isSupported()) {
+                    video.volume = 1.0;
+                    const hls = new Hls();
+                    hls.loadSource(m3u8Url);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        video.play();
+                    });
+                }
             }
         }
 
@@ -46,6 +50,21 @@
             const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             const r = window.location.search.substr(1).match(reg);
             if (r != null) return unescape(r[2]); return null;
+        }
+
+        function isPC() {
+            const userAgentInfo = navigator.userAgent;
+            const Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+            let flag = true;
+            for (let v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
         }
 
         window.onload = () => {
