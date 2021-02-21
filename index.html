@@ -24,54 +24,7 @@
 </head>
 
 <body>
-    <video id="player" muted controls></video>
-    <script type="text/javascript" charset="utf-8"
-        src="https://user-gold-cdn.xitu.io/2020/4/24/171ac6c077d4a5fc"></script>
-    <script>
-        function playM3u8(url) {
-            const video = document.getElementById('player');
-            const m3u8Url = decodeURIComponent(url)
-            if (!isPC()) {
-                video.setAttribute('src', m3u8Url)
-            } else {
-                if (Hls.isSupported()) {
-                    video.volume = 1.0;
-                    const hls = new Hls();
-                    hls.loadSource(m3u8Url);
-                    hls.attachMedia(video);
-                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                        video.play();
-                    });
-                }
-            }
-        }
-
-        function getUrlParam(name) {
-            const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            const r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
-        }
-
-        function isPC() {
-            const userAgentInfo = navigator.userAgent;
-            const Agents = ["Android", "iPhone",
-                "SymbianOS", "Windows Phone",
-                "iPad", "iPod"];
-            let flag = true;
-            for (let v = 0; v < Agents.length; v++) {
-                if (userAgentInfo.indexOf(Agents[v]) > 0) {
-                    flag = false;
-                    break;
-                }
-            }
-            return flag;
-        }
-
-        window.onload = () => {
-            const url = getUrlParam('url') || "https://user-gold-cdn.xitu.io/2020/4/24/171ac960ba281dc4"
-            playM3u8(url);
-        }
-    </script>
+    <video id="player" src="http://24mex.vaiwan.com/m3u8/index.m3u8" autoplay muted controls></video>
 </body>
 
 </html>
