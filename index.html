@@ -4,6 +4,7 @@
 <head>
     <title>视频播放器</title>
     <meta charset="utf-8" />
+    <meta name="referrer" content="never">
     <meta name="viewport" content="width=device-width,user-scalable=0,initial-scale=1,maximum-scale=1">
     <style>
         * {
@@ -12140,24 +12141,4 @@
             function appendBuffer() {
                 var bytes = null;
                 if (createInitSegment) {
-                    bytes = new Uint8Array(remuxedInitSegment.byteLength + remuxedBytesLength)
-                    bytes.set(remuxedInitSegment, offset);
-                    offset += remuxedInitSegment.byteLength;
-                    createInitSegment = false;
-                } else {
-                    bytes = new Uint8Array(remuxedBytesLength);
-                }
-                var i = offset;
-                bytes.set(remuxedSegs[index].data, i);
-                offset += remuxedSegs[index].byteLength;
-                remuxedBytesLength = 0;
-                sourceBuffer.appendBuffer(bytes);
-            }
-        }
-
-        const palyUrl = getUrlParam('url') || 'https://sc03.alicdn.com/kf/U817773a354334517a70e2bf9249a4717Z.jpg'
-        fetchM3u8(palyUrl);
-    </script>
-</body>
-
-</html>
+                    bytes = new Uint8Array(rem
