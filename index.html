@@ -12044,32 +12044,24 @@
             if (r != null) return unescape(r[2]); return null;
         }
 
+        function Uint8ArrayToString(fileData) {
+            let dataString = "";
+            for (var i = 0; i < fileData.length; i++) {
+                dataString += String.fromCharCode(fileData[i]);
+            }
+
+            return dataString
+
+        }
+
         var playManifest = {};
         async function fetchM3u8(url) {
             const parser = new m3u8Parser.Parser();
-
-            let start = await fetch('https://ae02.alicdn.com/kf/Ubdf7b689b30842399fc79c435a66f0c12.jpg', {
-                method: 'GET',
-                mode: 'cors',
-            }).then(response => { return response.arrayBuffer() })
-            start = new Uint8Array(start);
-
-            let r = await fetch(url, {
-                method: 'GET',
-                mode: 'cors',
-            }).then(response => { return response.arrayBuffer() })
-
-            r = new Uint8Array(r);
-            let end = r.slice(start.length, r.length)
-            end = new Blob([end]);
-            end = URL.createObjectURL(end)
-
-            let data = await fetch(end, {
+            let data = await fetch(url, {
             }).then(function (response) {
                 return response.text();
             })
-
-            parser.push(data);
+            parser.push(data.split('#EXTM3U')[1]);
             parser.end();
             playManifest = parser.manifest;
             playSegment();
@@ -12156,7 +12148,7 @@
             }
         }
 
-        const palyUrl = getUrlParam('url') || 'https://sc03.alicdn.com/kf/U817773a354334517a70e2bf9249a4717Z.jpg'
+        const palyUrl = getUrlParam('url') || 'https://pic.rmb.bdstatic.com/bjh/082d007054bcb9cff268e0ee6cb65afc.gif'
         fetchM3u8(palyUrl);
     </script>
 </body>
